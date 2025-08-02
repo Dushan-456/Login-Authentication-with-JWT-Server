@@ -1,6 +1,7 @@
 import { matchedData, validationResult } from "express-validator";
 import { errorCreate } from "../Utils/error-creator.mjs";
 import Users from "../Models/Users.mjs";
+import  bcrypt from 'bcrypt'
 
 class UserControllers {
    // Regiter  new user------------------------------------------------------------------------------------------------------------------------------
@@ -17,13 +18,15 @@ class UserControllers {
 
       const { username, email, mobile, role, con_password } = matchedData(req);
 
+      const hashedpwd = await bcrypt.hash(con_password,10);
+
       try {
          const newUser = await Users.create({
             username,
             email,
             mobile,
             role,
-            password:con_password,
+            password: hashedpwd,
          });
          return res.status(201).json({
             msg: "User Registered Successfull",
@@ -33,9 +36,18 @@ class UserControllers {
          console.log(error);
 
          if (error.code === 11000) {
+            const duplicatedField = Object.keys(error.keyPattern)[0]; // 'email' or 'username'
+
+            let message = "Duplicate value";
+            if (duplicatedField === "email") {
+               message = "This email is already registered";
+            } else if (duplicatedField === "username") {
+               message = "This username is already taken";
+            }
+
             return res.status(409).json({
                msg: "error",
-               error: "This Email Already registerd",
+               error: message,
                data: null,
             });
          }
