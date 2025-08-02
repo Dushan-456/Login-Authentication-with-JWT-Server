@@ -1,18 +1,11 @@
-// import { Router } from "express";
-// import userControlers from "../Controllers/userControlers.mjs";
-// import { userDataValidator } from "../Utils/validationMethods.mjs";
-// import upload from "../Utils/upload.mjs";
+import { Router } from "express";
+import { RegisterValidator } from "../Utils/validationMethods.mjs";
+import UserControllers from "../Controllers/UserControllers.mjs";
 
-// const userRouter = Router();
+const userRouter = Router();
 
-// userRouter.post("/add-user",upload.single("profilePicture"), userDataValidator(), userControlers.createNewUser);
+userRouter.post("/register-user",RegisterValidator(), UserControllers.registerNewUser);
 
-// userRouter.put(  "/update-user/:id",  upload.single("profilePicture"),   userDataValidator(),  userControlers.updateUser);
 
-// userRouter.delete("/delete-user/:id", userControlers.deleteUser);
 
-// userRouter.get("/all-users", userControlers.showAllUsers);
-
-// userRouter.get("/:id", userControlers.getUserById);
-
-// export default userRouter;
+export default userRouter;
