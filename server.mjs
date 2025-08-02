@@ -1,26 +1,23 @@
-import 'dotenv/config';
-import express from 'express';
-import rootRouter from './Routes/index.mjs';
-import dbConnect from './src/db/config.mjs';
+import "dotenv/config";
+import express from "express";
+import dbConnect from "./src/db/config.mjs";
+import cors from "cors";
+import rootRouter from "./src/Routes/index.mjs";
 
+const server = express();
+const PORT = process.env.PORT || 5001;
 
+server.use(cors());
+server.use(express.json());
 
-const server = express()
-const PORT = process.env.PORT || 5001
-
-server.use(express.json())
-// server.use(cors());
-//ROUTE CONNECT 
-server.use('/api/v1/',rootRouter);
+//ROUTE CONNECT
+server.use("/api/v1/", rootRouter);
 
 // server.use('/uploads', express.static('uploads'));
 
-
-
-dbConnect.then(()=>{
-    console.log("DB Connected...... :)");
-    server.listen(PORT,()=>console.log(`Server is running........on port ${PORT}`));
-    
-})
-
-
+dbConnect.then(() => {
+   console.log("DB Connected...... :)");
+   server.listen(PORT, () =>
+      console.log(`Server is running........on port ${PORT}`)
+   );
+});
