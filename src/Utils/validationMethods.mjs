@@ -31,13 +31,13 @@ export const RegisterValidator = () => [
 //login Fields validate------------------------------------------------------------------------------------------------------------------------
 
 export const loginValidator = () => [
-   body("Username")
+   body("emailOrUsername")
       .trim()
       .escape()
       .notEmpty()
       .withMessage("Please Enter Username"),
 
-   body("Password")
+   body("password")
       .trim()
       .escape()
       .notEmpty()
