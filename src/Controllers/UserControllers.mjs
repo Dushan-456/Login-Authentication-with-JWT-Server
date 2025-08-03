@@ -104,13 +104,23 @@ class UserControllers {
             };
             const token = tokenGen(payload);
 
-            return res.status(200).json({
-               msg: "Login Successfull",
-               error: null,
-               data: {
-                  token,
-               },
-            });
+            return res
+               .cookie("auth-cookie", token, {
+                  maxAge: 1 * 24 * 60 * 60 * 1000,
+                  httpOnly: true,
+                  secure: process.env.NODE_ENV === "production",
+                  sameSite: "Strict",
+               })
+               .status(200)
+               .json({
+                  msg: "Login Successfull",
+                  error: null,
+                  data: {
+                     token,
+                  },
+               });
+
+               
          }
       } catch (error) {
          console.error("Login Error:", err);
